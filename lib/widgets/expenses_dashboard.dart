@@ -1,5 +1,6 @@
 import 'package:expense_tracker/widgets/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
+import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 
 class ExpensesDashboard extends StatefulWidget {
@@ -25,6 +26,15 @@ class _ExpensesDashboardState extends State<ExpensesDashboard> {
     )
   ];
 
+  void _openAddExpenseOverlay() {
+    showModalBottomSheet(
+      useSafeArea: true,
+      isScrollControlled: true,
+      context: context, //context is available in State class
+      builder: (ctx) => NewExpense(), //ctx is different from context
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +42,7 @@ class _ExpensesDashboardState extends State<ExpensesDashboard> {
         title: const Text('ExpenseTracker'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _openAddExpenseOverlay,
             icon: const Icon(Icons.add),
           ),
         ],
