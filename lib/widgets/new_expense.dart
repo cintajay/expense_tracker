@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key});
@@ -10,12 +11,27 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleFieldController = TextEditingController();
   final _amountFieldController = TextEditingController();
+  DateTime? _selectedDate;
 
   @override
   void dispose() {
     _titleFieldController.dispose();
     _amountFieldController.dispose();
     super.dispose();
+  }
+
+  void _presentDatePicker() async {
+  final now = DateTime.now();
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: DateTime(now.year - 1, now.month, now.day),
+      lastDate: now,
+    );
+
+    setState(() {
+      _selectedDate = picked;
+    });
   }
 
   @override
@@ -34,6 +50,7 @@ class _NewExpenseState extends State<NewExpense> {
           ),
           Row(
             children: [
+              //the 2 Expanded children occupy equal space
               Expanded(
                 child: TextField(
                   controller: _amountFieldController,
@@ -45,10 +62,20 @@ class _NewExpenseState extends State<NewExpense> {
                   )
                 ),
               ),
-              Text('No date selected'),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.calendar_month),
+              SizedBox(width: 24),
+              Expanded(
+                child: Row(
+                  //without Expanded, the alignments don't work but no error otherwise
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(_selectedDate == null ? 'No date selected': formatter.format(_selectedDate!)),
+                    IconButton(
+                      onPressed: _presentDatePicker,
+                      icon: const Icon(Icons.calendar_month),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
