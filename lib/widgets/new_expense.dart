@@ -12,6 +12,7 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleFieldController = TextEditingController();
   final _amountFieldController = TextEditingController();
   DateTime? _selectedDate;
+  Category _selectedCategory = Category.leisure;
 
   @override
   void dispose() {
@@ -82,6 +83,25 @@ class _NewExpenseState extends State<NewExpense> {
           SizedBox(height: 16,),
           Row(
             children: [
+              DropdownButton(
+                value: _selectedCategory, //the selected item which uses the same widget as the dropdown items           
+                items:
+                    Category.values.map((item) {
+                      return DropdownMenuItem(
+                        value: item, //eventhough value is not a required param, its omission would cause an error
+                        child: Text(item.name.toUpperCase()),
+                      );
+                    }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    if (value == null) {
+                      return;
+                    }
+                    _selectedCategory = value;
+                  });
+                },
+              ),
+              const Spacer(),
               TextButton(onPressed: () {
                 Navigator.pop(context);
               }, 
