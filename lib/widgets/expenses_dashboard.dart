@@ -29,10 +29,19 @@ class _ExpensesDashboardState extends State<ExpensesDashboard> {
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
       useSafeArea: true,
-      isScrollControlled: true,
+      isScrollControlled: true, //make it full screen
       context: context, //context is available in State class
-      builder: (ctx) => NewExpense(), //ctx is different from context
+      builder:
+          (ctx) => NewExpense(  //ctx is different from context
+            onAddExpense: _addExpense,
+          ),
     );
+  }
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
   }
 
   @override
