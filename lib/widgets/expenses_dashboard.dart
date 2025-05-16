@@ -67,6 +67,16 @@ class _ExpensesDashboardState extends State<ExpensesDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    Widget dashBoardBody = Center(
+      child: Text("No expenses found"),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      dashBoardBody = ExpensesList(
+        expenses: _registeredExpenses,
+        onRemoveExpense: _removeExpense,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('ExpenseTracker'),
@@ -77,7 +87,7 @@ class _ExpensesDashboardState extends State<ExpensesDashboard> {
           ),
         ],
       ),
-      body: ExpensesList(expenses: _registeredExpenses, onRemoveExpense: _removeExpense, )
+      body: dashBoardBody
     );
   }
 }
